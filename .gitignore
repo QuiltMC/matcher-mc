@@ -1,0 +1,13 @@
+/bin/
+/build/
+/build_state/
+/tmp/
+/run/
+/lib/
+/extbin/
+/.gradle/
+/.settings/
+/.classpath
+/.project
+/*.jar
+/TODO.txt
