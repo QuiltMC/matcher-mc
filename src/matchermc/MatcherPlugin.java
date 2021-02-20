@@ -24,6 +24,7 @@ public class MatcherPlugin implements Plugin {
 
 	private static void init(Gui gui) {
 		McJsonProjectSetup.init(gui);
+		IntermediaryGen.init(gui);
 	}
 
 	static final MappingField MC_MAPPING_FIELD = MappingField.AUX2;
