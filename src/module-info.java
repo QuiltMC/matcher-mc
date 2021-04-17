@@ -1,7 +1,7 @@
 module matchermc {
 	exports matchermc;
 
-	requires gson;
+	requires com.google.gson;
 	requires javafx.base;
 	requires javafx.controls;
 	requires javafx.graphics;
