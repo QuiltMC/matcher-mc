@@ -1,0 +1,75 @@
+plugins {
+	id 'java'
+	id 'maven-publish'
+	id 'org.openjfx.javafxplugin' version '0.0.8'
+	id 'de.jjohannes.extra-java-module-info' version '0.5'
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		name "Quilt"
+		url 'https://maven.quiltmc.org/repository/release/'
+	}
+}
+
+archivesBaseName = 'matcher-mc'
+group = 'org.quiltmc'
+
+sourceSets {
+	main {
+		java.srcDirs = ['src']
+		resources.srcDirs = ['res']
+	}
+}
+
+javafx {
+	version = "11.0.2"
+	modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.web' ]
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+
+	if (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_11)) {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(11)
+		}
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	it.options.release = 11
+}
+
+dependencies {
+	implementation("org.quiltmc:matcher")
+	implementation("com.google.code.gson:gson:2.8.6")
+}
+
+// TODO: Add Automatic-Module-Name to all these in Quilt forks
+extraJavaModuleInfo {
+	automaticModule("cfr-0.0.2.jar", "cfr")
+	automaticModule("procyon-quilt-compilertools-0.5.35.local.jar", "procyon.compilertools")
+	automaticModule("procyon-quilt-core-0.5.35.local.jar", "procyon.core")
+	automaticModule("quiltflower-1.3.0.jar", "intellij.fernflower")
+}
+
+tasks.register("run", JavaExec) {
+	group = "quilt"
+	description = "Run a Matcher development environment with the Matcher-MC plugin on the module path"
+	classpath(sourceSets.main.output, configurations.runtimeClasspath)
+
+	mainModule = "matcher"
+	mainClass = "matcher.Main"
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}
